@@ -1,17 +1,24 @@
-// import 'babel-polyfill'; //Need for Object.assign used with Redux
+import 'babel-polyfill'; //Need for Object.assign used with Redux
 import React from 'react';
-import {render} from 'react-dom';
-import { Router, BrowserRouter } from 'react-router';
-import routes from './routes';
+import ReactDOM from 'react-dom';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 import {Provider} from 'react-redux';
-// import configureStore from './store/configureStore';
+import configureStore from './state/configureStore';
 
-// const store = configureStore();
+import {HomePage} from './components/HomePage'
+import {RoverDetails} from './components/RoverDetails';
+
+const store = configureStore();
 // store.dispatch(loadCourses());
 
-render (
-  <Provider>
-    <Router routes={routes} />
+ReactDOM.render (
+  <Provider store={store}>
+    <Router>
+      <div>
+        <Route exact={true} path='/' component={HomePage}/>
+        <Route path="/rover/:name" component={RoverDetails} />
+      </div>
+    </Router>
   </Provider>,
   document.getElementById('root')
 );
