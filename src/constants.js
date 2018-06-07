@@ -1,0 +1,1 @@
+export const roverNames = ['Spirit', 'Opportunity', 'Curiosity'];

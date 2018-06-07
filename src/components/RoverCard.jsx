@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
+// import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -9,11 +9,13 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 const cardStyles = { maxWidth: 600 };
+const cardMediaStyles =  {width: '250px', height: '250px'};
 
 const RoverCard = ({name, manifest}) => {
+  const imgUrl = `/img/${name}.jpg`;
   return (
     <Card style={cardStyles}>
-      <CardMedia image="http://www.placehold.it/250" title={name + 'Rover Details'} />
+      <CardMedia style={cardMediaStyles} image={imgUrl} title={name + ' Rover'} />
       <CardContent>
         <Typography gutterBottom variant="headline" component="h2">
           {name}
@@ -36,6 +38,6 @@ const RoverCard = ({name, manifest}) => {
   );
 };
 
-export default withStyles(cardStyles)(RoverCard);
+export default RoverCard;
 
 
