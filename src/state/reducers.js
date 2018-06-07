@@ -9,14 +9,10 @@ const initialManifests = roverNames.reduce((manifests, rover) => {
 export function manifestsReducer (state = initialManifests, action) {
   switch (action.type) {
     case actionTypes.REQUEST_ALL_MANIFESTS: {
-      return { ...state, loading: true }
+      return Object.assign({}, state);
     }
     case actionTypes.RECEIVE_ALL_MANIFESTS: {
-      return {
-        ...state,
-        loading: false,
-        manifests: action.manifests
-      }
+      return Object.assign({}, state, action.manifests);
     }
     default: {
       return state;

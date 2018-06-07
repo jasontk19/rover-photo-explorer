@@ -21,12 +21,11 @@ const RoverCard = ({name, manifest}) => {
           {name}
         </Typography>
         <Typography component="p">
-          Mission Status: {manifest.status} <br/>
-          Launched: {manifest.launch_date} <br/>
-          Landed: {manifest.landing_date} <br/>
-          Last active Sol: {manifest.max_sol} <br/>
-          Total photos: {manifest.total_photos} <br/>
-          Mission Status: {manifest.status} <br/>
+          <b>Launched:</b> {manifest.launch_date} <br/>
+          <b>Landed:</b> {manifest.landing_date} <br/>
+          <b>Last active Sol:</b> {manifest.max_sol} <br/>
+          <b>Total photos:</b> {manifest.total_photos} <br/>
+          <b>Mission Status:</b> {manifest.status} <br/>
         </Typography>
         <CardActions>
           <Button size="medium" color="primary">

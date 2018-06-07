@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
@@ -11,7 +12,9 @@ import HomePage from './components/HomePage';
 import { RoverDetails } from './components/RoverDetails';
 
 const store = createStore(
-  combineReducers({manifests}),
+  combineReducers({
+    manifests
+  }),
   applyMiddleware(thunk)
 );
 
