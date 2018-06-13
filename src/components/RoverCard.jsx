@@ -8,7 +8,10 @@ import Spirit from '../img/Spirit.jpg';
 import Opportunity from '../img/Opportunity.jpg';
 import Curiosity from '../img/Curiosity.jpg';
 
-const cardStyles = { margin: 'auto', width: '80%' };
+const cardStyles = {
+  margin: 'auto',
+  maxWidth: '600px'
+};
 const cardMediaStyles =  {
   width: '250px',
   height: '250px',

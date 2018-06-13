@@ -25,6 +25,9 @@ const styles = theme => ({
     backgroundColor: '#efefef',
     border: '1px solid #ddd'
   },
+  results: {
+    margin: '30px 5px'
+  },
   solDropdown: {
     minWidth: '215px'
   }
@@ -64,7 +67,8 @@ class PhotoSearch extends React.Component {
   requestPhotos() {
     const params = {
       sol: this.state.selectedSol,
-      camera: this.state.selectedCamera
+      camera: this.state.selectedCamera,
+      page: 1
     };
     this.props.requestPhotos(this.props.rover, params);
   }
@@ -73,6 +77,9 @@ class PhotoSearch extends React.Component {
     const {rover, manifest, classes} = this.props;
     let solChoices = manifest.photos;
     let cameras = this.state.selectedSolObj.cameras;
+    let singlePhoto = this.props.photos[0];
+    let earthDate = singlePhoto && singlePhoto.earth_date;
+    let cameraName = singlePhoto && singlePhoto.camera.full_name;
 
     return (
       <div className={classes.root}>
@@ -132,7 +139,14 @@ class PhotoSearch extends React.Component {
           </FormControl>
         </div>
 
-        {this.props.photos.length > 0 && <PhotoGrid photos={this.props.photos} />}
+        {singlePhoto &&
+          <div className={classes.results}>
+            <h3>{cameraName}, {earthDate} </h3>
+            <h4> {this.props.photos.length} photos </h4>
+            {this.props.photos.length > 0 && <PhotoGrid photos={this.props.photos} />}
+          </div>
+        }
+
 
       </div>
     );

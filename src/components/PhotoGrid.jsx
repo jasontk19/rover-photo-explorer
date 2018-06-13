@@ -1,8 +1,7 @@
 import React from 'react';
-import ListSubheader from '@material-ui/core/ListSubheader';
+
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
 import PhotoDialog from './PhotoDialog';
 
 class PhotoGrid extends React.Component {
@@ -25,9 +24,14 @@ class PhotoGrid extends React.Component {
   };
 
   render () {
+    let tileStyles = { cursor: 'pointer' };
+    let containerStyles = {
+      height: '600px',
+      overflowY: 'auto',
+      overflowX: 'hidden'
+    };
     return (
-      <div>
-
+      <div style={containerStyles}>
         { this.state.dialogOpen &&
           <PhotoDialog
             photo={this.state.dialogPhoto}
@@ -35,24 +39,17 @@ class PhotoGrid extends React.Component {
             onClose={this.handleClose}
           />
         }
-
         <GridList cellHeight={120} spacing={4} cols={3}>
 
-          <GridListTile key="Subheader" cols={3} style={{ height: 'auto' }}>
-            <ListSubheader component="div"> Photo Results </ListSubheader>
-          </GridListTile>
-
           {(this.props.photos || []).map(photo => (
-            <GridListTile key={photo.id} cols={1}>
+            <GridListTile
+              key={photo.id}
+              style={tileStyles}
+              cols={1}
+              onClick={this.handleClickOpen.bind(this, photo)}>
 
-              <img onClick={this.handleClickOpen.bind(this, photo)}
-                   src={photo.img_src}
-                   alt={photo.earth_date + photo.camera.name} />
+              <img src={photo.img_src} alt={photo.earth_date + photo.camera.name} />
 
-              <GridListTileBar
-                title={photo.earth_date}
-                subtitle={<span>Camera: {photo.camera.name}</span>}
-              />
             </GridListTile>
           ))}
 
