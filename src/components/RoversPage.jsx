@@ -6,22 +6,28 @@ import Tabs from '@material-ui/core/Tabs';
 import { withStyles } from '@material-ui/core/styles';
 
 import { roverNames } from '../constants';
+import { clearPhotos } from "../state/actions";
 import PhotoSearch from './PhotoSearch';
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    height: '100%'
+    backgroundColor: theme.palette.background.paper
   },
 });
 
 class RoversPage extends React.Component {
-  state = {
-    value: 0
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: 0
+    };
+    this.handleChange = this.handleChange.bind(this);
+  }
+
 
   handleChange = (event, value) => {
+    this.props.dispatch(clearPhotos());
     this.setState({ value });
   };
 

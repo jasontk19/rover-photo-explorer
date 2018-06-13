@@ -18,6 +18,12 @@ function receivePhotos (photos) {
   }
 }
 
+export function clearPhotos () {
+  return {
+    type: actionTypes.CLEAR_PHOTOS
+  }
+}
+
 function receiveAllManifests (allManifests) {
   return {
     type: actionTypes.RECEIVE_ALL_MANIFESTS,

@@ -23,7 +23,10 @@ export function manifestsReducer (state = initialManifests, action) {
 export function photosReducer (state = [], action) {
   switch (action.type) {
     case actionTypes.RECEIVE_PHOTOS: {
-      return state.concat(action.photos);
+      return state = [].concat(action.photos);
+    }
+    case actionTypes.CLEAR_PHOTOS: {
+      return state = []
     }
     default: {
       return state;

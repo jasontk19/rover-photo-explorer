@@ -1,19 +1,34 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 
-const cardStyles = {margin: 'auto', width: '80%'};
-const cardMediaStyles =  {width: '250px', height: '50px'};
+import Spirit from '../img/Spirit.jpg';
+import Opportunity from '../img/Opportunity.jpg';
+import Curiosity from '../img/Curiosity.jpg';
 
-const RoverCard = ({name, manifest}) => {
-  const imgUrl = `/img/${name}.jpg`;
+const cardStyles = { margin: 'auto', width: '80%' };
+const cardMediaStyles =  {
+  width: '250px',
+  height: '250px',
+  float: 'left'
+};
+const cardContentStyles = {
+  float: 'left',
+  margin: '15px'
+};
+
+export const RoverCard = ({name, manifest}) => {
+  const images = {
+    Spirit,
+    Opportunity,
+    Curiosity
+  };
   return (
-    <Card style={cardStyles}>
-      <CardMedia style={cardMediaStyles} image={imgUrl} title={name + ' Rover'} />
-      <CardContent>
+    <Card raised style={cardStyles}>
+      <CardMedia style={cardMediaStyles} image={images[name]} title={name + ' Rover'} />
+      <CardContent style={cardContentStyles}>
         <Typography gutterBottom variant="headline" component="h2">
           {name}
         </Typography>
@@ -28,7 +43,5 @@ const RoverCard = ({name, manifest}) => {
     </Card>
   );
 };
-
-export default RoverCard;
 
 

@@ -8,8 +8,11 @@ class PhotoDialog extends React.Component {
     const { photo, onClose, ...other } = this.props;
 
     return (
-      <Dialog onClose={onClose} aria-labelledby="simple-dialog-title" {...other}>
-        <DialogTitle id="simple-dialog-title"> {photo.earth_date} from {photo.camera.name} </DialogTitle>
+      <Dialog onClose={onClose} aria-labelledby="dialog-title" {...other}>
+        <DialogTitle id="dialog-title">
+          {photo.earth_date}  <br/>
+          {photo.camera.full_name}
+          </DialogTitle>
         <div>
           <img src={photo.img_src} alt={''} />
         </div>

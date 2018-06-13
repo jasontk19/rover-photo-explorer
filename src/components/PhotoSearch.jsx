@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {requestPhotos} from '../state/actions';
-import RoverCard from './RoverCard';
+import {RoverCard} from './RoverCard';
 import PhotoGrid from './PhotoGrid';
 
 import Select from '@material-ui/core/Select';
@@ -12,6 +12,23 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import Search from '@material-ui/icons/Search';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+  root: {
+    margin: '20px'
+  },
+  form: {
+    margin: '30px 15px',
+    padding: '15px',
+    float: 'left',
+    backgroundColor: '#efefef',
+    border: '1px solid #ddd'
+  },
+  solDropdown: {
+    minWidth: '215px'
+  }
+});
 
 class PhotoSearch extends React.Component {
 
@@ -20,8 +37,7 @@ class PhotoSearch extends React.Component {
     this.state = {
       selectedSol: '',
       selectedSolObj: { cameras: [] },
-      selectedCamera: '',
-      photos: []
+      selectedCamera: ''
     };
     this.handleSolChange = this.handleSolChange.bind(this);
     this.handleCameraChange = this.handleCameraChange.bind(this);
@@ -54,56 +70,69 @@ class PhotoSearch extends React.Component {
   }
 
   render() {
-    const {rover, manifest} = this.props;
+    const {rover, manifest, classes} = this.props;
     let solChoices = manifest.photos;
+    let cameras = this.state.selectedSolObj.cameras;
 
     return (
-      <div>
+      <div className={classes.root}>
         <RoverCard key={rover} name={rover} manifest={manifest}/>
 
-        <FormControl>
-          <FormLabel component="legend">Sol</FormLabel>
-          <Select
-            native
-            value={this.state.selectedSol}
-            onChange={this.handleSolChange}
-            inputProps={{ name: 'selectedSol', id: 'sol-select' }}
-            disabled={!solChoices || solChoices.length < 1}>
+        <div className={classes.form}>
 
-            { !this.state.selectedSol && <option value=""> </option> }
+          <FormControl component="fieldset" margin="normal">
+            <FormLabel component="legend">Martian Sol</FormLabel>
+            <Select
+              native
+              className={classes.solDropdown}
+              value={this.state.selectedSol}
+              onChange={this.handleSolChange}
+              inputProps={{ name: 'selectedSol', id: 'sol-select' }}
+              disabled={!solChoices || solChoices.length < 1}>
 
-            { (solChoices || []).map(item => (
-              <option key={item.sol} value={item.sol}>
-                Sol {item.sol}, ({item.total_photos} photos)
-              </option>
-            )) }
-          </Select>
-        </FormControl>
+              { !this.state.selectedSol && <option value=""> </option> }
 
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Camera</FormLabel>
-          <RadioGroup
-            aria-label="camera"
-            name="camera"
-            value={this.state.selectedCamera}
-            onChange={this.handleCameraChange}
-            disabled={this.state.selectedSolObj.cameras.length < 1}>
+              { (solChoices || []).map(item => (
+                <option key={item.sol} value={item.sol}>
+                  Sol {item.sol}, ({item.total_photos} photos)
+                </option>
+              )) }
+            </Select>
+          </FormControl>
 
-            {this.state.selectedSolObj.cameras.map(camera => (
-              <FormControlLabel key={camera} value={camera} control={<Radio/>} label={camera}/>
-            ))}
-          </RadioGroup>
-        </FormControl>
+          <br/>
 
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={this.requestPhotos}
-          disabled={!this.state.selectedCamera || !this.state.selectedSol}>
-          Search <Search />
-        </Button>
+          <FormControl component="fieldset" margin="normal">
+            <FormLabel component="legend">Camera</FormLabel>
+            <RadioGroup
+              aria-label="camera"
+              name="camera"
+              value={this.state.selectedCamera}
+              onChange={this.handleCameraChange}
+              disabled={!cameras.length}>
 
-        <PhotoGrid photos={this.props.photos} />
+              {!cameras.length && <FormControlLabel value="..." control={<Radio/>} label="..."/>}
+
+              {cameras.map(camera => (
+                <FormControlLabel key={camera} value={camera} control={<Radio/>} label={camera}/>
+              ))}
+            </RadioGroup>
+          </FormControl>
+
+          <br/>
+
+          <FormControl margin="normal" fullWidth>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.requestPhotos}
+              disabled={!this.state.selectedCamera || !this.state.selectedSol}>
+              Search <Search />
+            </Button>
+          </FormControl>
+        </div>
+
+        {this.props.photos.length > 0 && <PhotoGrid photos={this.props.photos} />}
 
       </div>
     );
@@ -114,10 +143,10 @@ const mapStateToProps = (state, ownProps) => ({
     photos: state.photos
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    requestPhotos: (rover, params) => dispatch(requestPhotos(rover, params))
-  };
-}
+const mapDispatchToProps = dispatch => ({
+  requestPhotos: (rover, params) => dispatch(requestPhotos(rover, params))
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(PhotoSearch);
+const connected = connect(mapStateToProps, mapDispatchToProps)(PhotoSearch);
+
+export default withStyles(styles)(connected);
