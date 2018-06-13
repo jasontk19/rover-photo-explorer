@@ -1,9 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {requestPhotos} from '../state/actions';
-import {RoverCard} from './RoverCard';
+import RoverCard from './RoverCard';
 import PhotoForm from './PhotoForm';
 import PhotoGrid from './PhotoGrid';
+import {Utils} from '../Utils';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
@@ -42,7 +43,7 @@ class PhotoSearch extends React.Component {
   handleSolChange (event) {
     let solNum = event.target.value;
     let photos = this.props.manifest.photos;
-    let objForSol = photos.find(item => (item.sol == solNum));
+    let objForSol = photos.find(item => (item.sol.toString() === solNum));
     this.setState({
       selectedSol: solNum,
       selectedSolObj: objForSol,
@@ -62,6 +63,7 @@ class PhotoSearch extends React.Component {
       camera: this.state.selectedCamera,
       page: 1
     };
+    /* TODO implement real paging */
     this.props.requestPhotos(this.props.rover, params);
   }
 
@@ -72,9 +74,9 @@ class PhotoSearch extends React.Component {
       classes
     } = this.props;
 
-    let singlePhoto = this.props.photos[0];
-    let earthDate = singlePhoto && singlePhoto.earth_date;
-    let cameraName = singlePhoto && singlePhoto.camera.full_name;
+    let aPhoto = this.props.photos[0];
+    let earthDate = aPhoto && Utils.formatDate(aPhoto.earth_date);
+    let cameraName = aPhoto && aPhoto.camera.full_name;
 
     return (
       <div className={classes.root}>
@@ -88,10 +90,9 @@ class PhotoSearch extends React.Component {
           handleCameraChange={this.handleCameraChange}
           requestPhotos={this.requestPhotos}
         />
-        { singlePhoto &&
+        { aPhoto &&
           <div className={classes.results}>
             <h3>{cameraName}, {earthDate} </h3>
-            <h4> {this.props.photos.length} photos </h4>
             {this.props.photos.length > 0 && <PhotoGrid photos={this.props.photos} />}
           </div>
         }
@@ -109,5 +110,4 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const connected = connect(mapStateToProps, mapDispatchToProps)(PhotoSearch);
-
 export default withStyles(styles)(connected);

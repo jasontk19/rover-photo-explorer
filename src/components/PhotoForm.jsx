@@ -35,14 +35,15 @@ const PhotoForm = props => {
     requestPhotos
   } = props;
 
-  let solChoices = manifest.photos;
+  /* TODO allow flipping ordering of sols (ASC v DESC) */
+  let solChoices = manifest.photos.reverse();
   let cameras = selectedSolObj.cameras;
 
   return (
     <div className={classes.root}>
 
       <FormControl component="fieldset" margin="normal">
-        <FormLabel component="legend">Martian Sol</FormLabel>
+        <FormLabel component="legend"> Martian Sol </FormLabel>
         <Select
           native
           className={classes.solDropdown}
@@ -64,7 +65,7 @@ const PhotoForm = props => {
       <br/>
 
       <FormControl component="fieldset" margin="normal">
-        <FormLabel component="legend">Camera</FormLabel>
+        <FormLabel component="legend"> Camera </FormLabel>
         <RadioGroup
           aria-label="camera"
           name="camera"
