@@ -7,7 +7,7 @@ class PhotoDialog extends React.Component {
     const { photo, onClose, ...other } = this.props;
 
     return (
-      <Dialog  onClose={onClose} aria-labelledby="dialog-title" {...other}>
+      <Dialog maxWidth={false} onClose={onClose} aria-labelledby="dialog-title" {...other}>
         <DialogTitle id="dialog-title">
           {/* TODO add to favorites interaction */}
           <span>&nbsp;</span>

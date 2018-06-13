@@ -2,16 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {requestPhotos} from '../state/actions';
 import {RoverCard} from './RoverCard';
+import PhotoForm from './PhotoForm';
 import PhotoGrid from './PhotoGrid';
-
-import Select from '@material-ui/core/Select';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Button from '@material-ui/core/Button';
-import Search from '@material-ui/icons/Search';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
@@ -74,9 +66,12 @@ class PhotoSearch extends React.Component {
   }
 
   render() {
-    const {rover, manifest, classes} = this.props;
-    let solChoices = manifest.photos;
-    let cameras = this.state.selectedSolObj.cameras;
+    const {
+      rover,
+      manifest,
+      classes
+    } = this.props;
+
     let singlePhoto = this.props.photos[0];
     let earthDate = singlePhoto && singlePhoto.earth_date;
     let cameraName = singlePhoto && singlePhoto.camera.full_name;
@@ -84,70 +79,22 @@ class PhotoSearch extends React.Component {
     return (
       <div className={classes.root}>
         <RoverCard key={rover} name={rover} manifest={manifest}/>
-
-        <div className={classes.form}>
-
-          <FormControl component="fieldset" margin="normal">
-            <FormLabel component="legend">Martian Sol</FormLabel>
-            <Select
-              native
-              className={classes.solDropdown}
-              value={this.state.selectedSol}
-              onChange={this.handleSolChange}
-              inputProps={{ name: 'selectedSol', id: 'sol-select' }}
-              disabled={!solChoices || solChoices.length < 1}>
-
-              { !this.state.selectedSol && <option value=""> </option> }
-
-              { (solChoices || []).map(item => (
-                <option key={item.sol} value={item.sol}>
-                  Sol {item.sol}, ({item.total_photos} photos)
-                </option>
-              )) }
-            </Select>
-          </FormControl>
-
-          <br/>
-
-          <FormControl component="fieldset" margin="normal">
-            <FormLabel component="legend">Camera</FormLabel>
-            <RadioGroup
-              aria-label="camera"
-              name="camera"
-              value={this.state.selectedCamera}
-              onChange={this.handleCameraChange}
-              disabled={!cameras.length}>
-
-              {!cameras.length && <FormControlLabel value="..." control={<Radio/>} label="..."/>}
-
-              {cameras.map(camera => (
-                <FormControlLabel key={camera} value={camera} control={<Radio/>} label={camera}/>
-              ))}
-            </RadioGroup>
-          </FormControl>
-
-          <br/>
-
-          <FormControl margin="normal" fullWidth>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.requestPhotos}
-              disabled={!this.state.selectedCamera || !this.state.selectedSol}>
-              Search <Search />
-            </Button>
-          </FormControl>
-        </div>
-
-        {singlePhoto &&
+        <PhotoForm
+          manifest={manifest}
+          selectedSol={this.state.selectedSol}
+          selectedSolObj={this.state.selectedSolObj}
+          handleSolChange={this.handleSolChange}
+          selectedCamera={this.state.selectedCamera}
+          handleCameraChange={this.handleCameraChange}
+          requestPhotos={this.requestPhotos}
+        />
+        { singlePhoto &&
           <div className={classes.results}>
             <h3>{cameraName}, {earthDate} </h3>
             <h4> {this.props.photos.length} photos </h4>
             {this.props.photos.length > 0 && <PhotoGrid photos={this.props.photos} />}
           </div>
         }
-
-
       </div>
     );
   }
