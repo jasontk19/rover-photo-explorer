@@ -11,7 +11,7 @@ export function requestAllManifests () {
   }
 }
 
-function receivePhotos(photos) {
+function receivePhotos (photos) {
   return {
     type: actionTypes.RECEIVE_PHOTOS,
     photos: photos
@@ -37,8 +37,10 @@ function formatManifests (responses) {
 export function loadAllManifests () {
   return dispatch => {
     const requestUrl = baseUrl + 'manifests/';
-    const paramsObj = { params: { api_key: apiKey } };
-    let allRequests = roverNames.map(name => ( axios.get(requestUrl + name, paramsObj) ));
+    let config = {
+      params: { api_key: apiKey }
+    };
+    let allRequests = roverNames.map(rover => ( axios.get(requestUrl + rover, config) ));
     dispatch(requestAllManifests());
     return axios.all(allRequests).then(response => {
       let formattedResponse = formatManifests(response);
@@ -47,14 +49,15 @@ export function loadAllManifests () {
   }
 }
 
-export function requestPhotos (params) {
+export function requestPhotos (rover, params) {
   return dispatch => {
-    const requestUrl = baseUrl + 'photos/';
-    const paramsObj = { params: { api_key: apiKey } };
-    Object.assign(paramsObj, params);
-
-    return axios.post(requestUrl, paramsObj).then(response => {
-      return dispatch(receivePhotos(response.data));
+    const requestUrl = baseUrl + 'rovers/' + rover.toLowerCase() + '/photos';
+    let config = {
+      params: { api_key: apiKey }
+    };
+    Object.assign(config.params, params);
+    return axios.get(requestUrl, config).then(response => {
+      return dispatch(receivePhotos(response.data.photos));
     })
   }
 }

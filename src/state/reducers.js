@@ -9,10 +9,21 @@ const initialManifests = roverNames.reduce((manifests, rover) => {
 export function manifestsReducer (state = initialManifests, action) {
   switch (action.type) {
     case actionTypes.REQUEST_ALL_MANIFESTS: {
-      return Object.assign({}, state);
+      return state;
     }
     case actionTypes.RECEIVE_ALL_MANIFESTS: {
       return Object.assign({}, state, action.manifests);
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+export function photosReducer (state = [], action) {
+  switch (action.type) {
+    case actionTypes.RECEIVE_PHOTOS: {
+      return state.concat(action.photos);
     }
     default: {
       return state;

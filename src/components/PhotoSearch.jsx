@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {requestPhotos} from '../state/actions';
 import RoverCard from './RoverCard';
+import PhotoGrid from './PhotoGrid';
 
 import Select from '@material-ui/core/Select';
 import Radio from '@material-ui/core/Radio';
@@ -17,12 +18,10 @@ class PhotoSearch extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedRover: '',
-      selectedManifest: {},
       selectedSol: '',
       selectedSolObj: { cameras: [] },
       selectedCamera: '',
-      solChoices: []
+      photos: []
     };
     this.handleSolChange = this.handleSolChange.bind(this);
     this.handleCameraChange = this.handleCameraChange.bind(this);
@@ -31,7 +30,7 @@ class PhotoSearch extends React.Component {
 
   handleSolChange (event) {
     let solNum = event.target.value;
-    let photos = this.state.selectedManifest.photos;
+    let photos = this.props.manifest.photos;
     let objForSol = photos.find(item => (item.sol == solNum));
     this.setState({
       selectedSol: solNum,
@@ -51,24 +50,16 @@ class PhotoSearch extends React.Component {
       sol: this.state.selectedSol,
       camera: this.state.selectedCamera
     };
-    // this.props.requestPhotos(params);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    let roverName = nextProps.name;
-    let manifest = nextProps.manifests[roverName];
-    this.setState({
-      selectedRover: roverName,
-      selectedManifest: manifest,
-      solChoices: manifest.photos
-    });
+    this.props.requestPhotos(this.props.rover, params);
   }
 
   render() {
-    const {name} = this.props;
+    const {rover, manifest} = this.props;
+    let solChoices = manifest.photos;
+
     return (
       <div>
-        <RoverCard key={name} name={name} manifest={this.state.selectedManifest}/>
+        <RoverCard key={rover} name={rover} manifest={manifest}/>
 
         <FormControl>
           <FormLabel component="legend">Sol</FormLabel>
@@ -77,14 +68,15 @@ class PhotoSearch extends React.Component {
             value={this.state.selectedSol}
             onChange={this.handleSolChange}
             inputProps={{ name: 'selectedSol', id: 'sol-select' }}
-            disabled={!this.state.solChoices || this.state.solChoices.length < 1}>
+            disabled={!solChoices || solChoices.length < 1}>
 
-            <option value=""> </option> /** TODO don't show empty default once a selection has been made */
-            {(this.state.solChoices || []).map(item => (
+            { !this.state.selectedSol && <option value=""> </option> }
+
+            { (solChoices || []).map(item => (
               <option key={item.sol} value={item.sol}>
                 Sol {item.sol}, ({item.total_photos} photos)
               </option>
-            ))}
+            )) }
           </Select>
         </FormControl>
 
@@ -111,21 +103,21 @@ class PhotoSearch extends React.Component {
           Search <Search />
         </Button>
 
-        <h2>Photo Results</h2>
+        <PhotoGrid photos={this.props.photos} />
+
       </div>
     );
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    manifests: state.manifests,
+const mapStateToProps = (state, ownProps) => ({
     photos: state.photos
-  };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  requestPhotos: dispatch(requestPhotos)
 });
+
+function mapDispatchToProps(dispatch) {
+  return {
+    requestPhotos: (rover, params) => dispatch(requestPhotos(rover, params))
+  };
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(PhotoSearch);

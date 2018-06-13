@@ -8,7 +8,10 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { loadAllManifests } from './state/actions';
-import { manifestsReducer as manifests } from './state/reducers';
+import {
+  manifestsReducer as manifests,
+  photosReducer as photos
+} from './state/reducers';
 
 import Header from './components/Header';
 import HomePage from './components/HomePage';
@@ -16,7 +19,8 @@ import RoversPage from './components/RoversPage';
 
 const store = createStore(
   combineReducers({
-    manifests
+    manifests,
+    photos
   }),
   applyMiddleware(thunk)
 );
@@ -30,21 +34,19 @@ class App extends Component {
   }
   render() {
     return (
-      <React.Fragment>
-        <CssBaseline/>
-        <Provider store={store}>
-          <Router>
-            <div>
-              <Header/>
-              <Route exact={true}
-                     path='/'
-                     render={ (props) => <HomePage {...props} /> }/>
-              <Route path="/photoSearch/"
-                     render={ (props) => <RoversPage {...props} /> }/>
-            </div>
-          </Router>
-        </Provider>
-      </React.Fragment>
+
+      <Provider store={store}>
+        <Router>
+          <div>
+            <Header/>
+            <Route exact={true}
+                   path='/'
+                   render={ (props) => <HomePage {...props} /> }/>
+            <Route path="/photoSearch/"
+                   render={ (props) => <RoversPage {...props} /> }/>
+          </div>
+        </Router>
+      </Provider>
     )
   }
 }
