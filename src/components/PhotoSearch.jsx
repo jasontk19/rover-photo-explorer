@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {requestPhotos} from '../state/actions';
+import {requestPhotos} from '../state/actions.photos';
 import RoverCard from './RoverCard';
 import PhotoForm from './PhotoForm';
 import PhotoGrid from './PhotoGrid';

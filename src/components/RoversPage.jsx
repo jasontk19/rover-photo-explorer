@@ -6,7 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import { withStyles } from '@material-ui/core/styles';
 
 import { roverNames } from '../constants';
-import { clearPhotos } from "../state/actions";
+import { clearPhotos } from "../state/actions.photos";
 import PhotoSearch from './PhotoSearch';
 
 const styles = theme => ({
@@ -20,7 +20,7 @@ class RoversPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 0
+      value: 2
     };
     this.handleChange = this.handleChange.bind(this);
   }

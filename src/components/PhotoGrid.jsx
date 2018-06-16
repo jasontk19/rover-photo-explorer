@@ -1,8 +1,9 @@
 import React from 'react';
 
+import PhotoDialog from './PhotoDialog';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
-import PhotoDialog from './PhotoDialog';
+// import TablePagination from "@material-ui/core/TablePagination";
 
 class PhotoGrid extends React.Component {
   constructor(props) {
@@ -11,6 +12,10 @@ class PhotoGrid extends React.Component {
       dialogOpen: false
     };
   }
+
+  // handleChangePage = (event, page) => {
+  //   this.setState({ page })
+  // };
 
   handleClickOpen = photo => {
     this.setState({
@@ -54,6 +59,14 @@ class PhotoGrid extends React.Component {
           ))}
 
         </GridList>
+        {/*<TablePagination*/}
+          {/*component="div"*/}
+          {/*count={data.length}*/}
+          {/*rowsPerPage={25}*/}
+          {/*rowsPerPageOptions={25}*/}
+          {/*page={this.state.page}*/}
+          {/*onChangePage={this.handleChangePage}*/}
+        {/*/>*/}
       </div>
     )
   }

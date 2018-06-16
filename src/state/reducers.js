@@ -8,9 +8,6 @@ const initialManifests = roverNames.reduce((manifests, rover) => {
 
 export function manifestsReducer (state = initialManifests, action) {
   switch (action.type) {
-    case actionTypes.REQUEST_ALL_MANIFESTS: {
-      return state;
-    }
     case actionTypes.RECEIVE_ALL_MANIFESTS: {
       return Object.assign({}, state, action.manifests);
     }
@@ -27,6 +24,23 @@ export function photosReducer (state = [], action) {
     }
     case actionTypes.CLEAR_PHOTOS: {
       return state = []
+    }
+    default: {
+      return state;
+    }
+  }
+}
+
+export function bookmarkPhotosReducer (state = [], action) {
+  switch (action.type) {
+    case actionTypes.BOOKMARK_PHOTO: {
+      return state = [...state].concat(action.photo);
+    }
+    case actionTypes.RETRIEVE_BOOKMARKED_PHOTOS: {
+      if (!action.bookmarkedPhotos) {
+        return state;
+      }
+      return state = [...action.bookmarkedPhotos];
     }
     default: {
       return state;
