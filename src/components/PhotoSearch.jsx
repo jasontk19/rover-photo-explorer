@@ -6,6 +6,7 @@ import PhotoForm from './PhotoForm';
 import PhotoGrid from './PhotoGrid';
 import {Utils} from '../Utils';
 import { withStyles } from '@material-ui/core/styles';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 const styles = theme => ({
   root: {
@@ -80,7 +81,10 @@ class PhotoSearch extends React.Component {
 
     return (
       <div className={classes.root}>
-        <RoverCard key={rover} name={rover} manifest={manifest}/>
+        {
+          Object.keys(manifest).length > 0 ? <RoverCard key={rover} name={rover} manifest={manifest}/> :
+          <LinearProgress size={100} className={classes.progress} />
+        }
         <PhotoForm
           manifest={manifest}
           selectedSol={this.state.selectedSol}

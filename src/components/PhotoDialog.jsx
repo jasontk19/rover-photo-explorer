@@ -15,6 +15,10 @@ const styles = {
   },
   close: {
     float: 'right',
+  },
+  img: {
+    width: '100%',
+    height: 'auto'
   }
 };
 
@@ -48,7 +52,7 @@ class PhotoDialog extends React.Component {
           </Button>
         </DialogTitle>
         <div>
-          <img src={photo.img_src} alt={''} />
+          <img src={photo.img_src} alt={''} style={styles.img}/>
         </div>
       </Dialog>
     );

@@ -16,8 +16,9 @@ import {
   bookmarkPhotosReducer as bookmarkedPhotos
 } from './state/reducers';
 
-import Header from './components/Header';
+import { Header } from './components/Header';
 import RoversPage from './components/RoversPage';
+import BookmarksPage from './components/BookmarksPage';
 
 const store = createStore(
   combineReducers({
@@ -40,6 +41,7 @@ class App extends Component {
           <div>
             <Header/>
             <Route exact={true} path='/' render={ (props) => <RoversPage {...props} /> }/>
+            <Route exact={true} path='/bookmarks' render={ (props) => <BookmarksPage {...props} /> }/>
           </div>
         </Router>
       </Provider>

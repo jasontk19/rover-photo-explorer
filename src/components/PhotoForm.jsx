@@ -36,7 +36,7 @@ const PhotoForm = props => {
   } = props;
 
   /* TODO allow flipping ordering of sols (ASC v DESC) */
-  let solChoices = manifest.photos.reverse();
+  let solChoices = manifest.photos && [...manifest.photos].reverse();
   let cameras = selectedSolObj.cameras;
 
   return (
