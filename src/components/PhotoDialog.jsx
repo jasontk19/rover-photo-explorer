@@ -6,7 +6,8 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
-import { bookmarkPhoto } from "../state/actions.photos";
+import { toggleBookmark } from "../state/actions.photos";
+import PropTypes from 'prop-types';
 
 
 const styles = {
@@ -23,13 +24,20 @@ const styles = {
 };
 
 class PhotoDialog extends React.Component {
+  constructor(props) {
+    super(props);
+    this.toggleBookmark = this.toggleBookmark.bind(this);
+  }
 
-  bookmarkPhoto (photo) {
-    this.props.bookmarkPhoto(photo);
+  toggleBookmark () {
+    let photo = this.props.photo;
+    this.props.dispatch(toggleBookmark(photo))
   }
 
   render() {
     const { classes, photo, onClose, ...other } = this.props;
+    const isBookmarked = this.props.bookmarkedPhotos.find(bookmarkedPhoto => bookmarkedPhoto.id === photo.id);
+    const btnColor = isBookmarked ? 'primary' : 'secondary';
 
     return (
       <Dialog maxWidth={false} onClose={onClose} aria-labelledby="dialog-title" {...other}>
@@ -44,10 +52,10 @@ class PhotoDialog extends React.Component {
           </Button>
           <Button
             className={classes.bookmark}
-            color="primary"
+            color={btnColor}
             variant="fab"
             size="medium"
-            onClick={this.bookmarkPhoto.bind(this, photo)}>
+            onClick={this.toggleBookmark}>
             <FavoriteIcon/>
           </Button>
         </DialogTitle>
@@ -59,9 +67,17 @@ class PhotoDialog extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  bookmarkPhoto: (photo) => dispatch(bookmarkPhoto(photo))
+PhotoDialog.propTypes = {
+  dispatch: PropTypes.func,
+  bookmarkedPhotos: PropTypes.array,
+  photo: PropTypes.object,
+  open: PropTypes.bool,
+  onClose: PropTypes.func
+};
+
+const mapStateToProps = (state, ownProps) => ({
+  bookmarkedPhotos: state.bookmarkedPhotos
 });
 
-const connected = connect(null, mapDispatchToProps)(PhotoDialog);
+const connected = connect(mapStateToProps, null)(PhotoDialog);
 export default withStyles(styles)(connected);

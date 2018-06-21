@@ -17,19 +17,11 @@ export function clearPhotos () {
   }
 }
 
-function bookmarkPhotoState (photoToBookmark) {
-  return {
-    type: actionTypes.BOOKMARK_PHOTO,
-    photo: photoToBookmark
-  }
-}
-
 function loadBookmarkedPhotos (photos) {
   return {
     type: actionTypes.RETRIEVE_BOOKMARKED_PHOTOS,
     bookmarkedPhotos: photos
   }
-  
 }
 
 export function requestPhotos (rover, params) {
@@ -47,17 +39,34 @@ export function requestPhotos (rover, params) {
 
 export function retrieveBookmarkedPhotos () {
   return dispatch => {
-    const bookmarkedPhotos = JSON.parse(localStorage.getItem(bookmarkedPhotosKey)) || [];
-    return dispatch(loadBookmarkedPhotos(bookmarkedPhotos))
+    let bookmarkedPhotos = localStorage.getItem(bookmarkedPhotosKey);
+    let parsedPhotos = bookmarkedPhotos ? JSON.parse(bookmarkedPhotos) : [];
+    return dispatch(loadBookmarkedPhotos(parsedPhotos))
   }
 }
 
-export function bookmarkPhoto (photo) {
+function addBookmark (bookmarkedPhotos, photo) {
+  return [...bookmarkedPhotos].concat(photo);
+}
+
+function removeBookmark (bookmarkedPhotos, removePhoto) {
+  return [...bookmarkedPhotos].filter(photo => removePhoto.id !== photo.id);
+}
+
+export function toggleBookmark (photo) {
   return dispatch => {
-    const savedPhotos = localStorage.getItem(bookmarkedPhotosKey);
-    const parsedPhotos = JSON.parse(savedPhotos) || [];
-    const newSavedPhotos = [...parsedPhotos].concat(photo);
-    localStorage.setItem(bookmarkedPhotosKey, JSON.stringify(newSavedPhotos));
-    return dispatch(loadBookmarkedPhotos(newSavedPhotos));
+    let bookmarkedPhotos = localStorage.getItem(bookmarkedPhotosKey);
+    let parsedPhotos = bookmarkedPhotos ? JSON.parse(bookmarkedPhotos) : [];
+    let photoIsBookmarked = parsedPhotos.find(bookmarkedPhoto => photo.id === bookmarkedPhoto.id);
+    let photos = photoIsBookmarked ? removeBookmark(parsedPhotos, photo) : addBookmark(parsedPhotos, photo);
+    localStorage.setItem(bookmarkedPhotosKey, JSON.stringify(photos));
+    return dispatch(loadBookmarkedPhotos(photos));
+  }
+}
+
+export function clearBookmarks () {
+  return dispatch => {
+    localStorage.setItem(bookmarkedPhotosKey, '');
+    return dispatch(loadBookmarkedPhotos([]))
   }
 }

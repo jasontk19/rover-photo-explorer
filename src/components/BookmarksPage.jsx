@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import PhotoGrid from './PhotoGrid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-
+import { clearBookmarks } from '../state/actions.photos';
 
 const styles = theme => ({
   root: {
@@ -20,17 +20,26 @@ const styles = theme => ({
 });
 
 class RoversPage extends React.Component {
-  clearAll() {
-    //TODO dispatch a clear bookmarks action
+  constructor(props) {
+    super(props);
+    this.clearBookmarks = this.clearBookmarks.bind(this);
+  }
+
+  clearBookmarks () {
+    this.props.dispatch(clearBookmarks())
   }
 
   render() {
     let { classes } = this.props;
+    let hasPhotos = this.props.bookmarkedPhotos.length > 0;
 
     return (
       <div className={classes.root}>
         <Typography variant="title" align="center" className={classes.title}> Bookmarked Photos </Typography>
-        <Button className={classes.clearBtn}> Clear All </Button>
+        {
+          !hasPhotos ? <Typography align="center"> No bookmarks yet! </Typography> :
+            <Button className={classes.clearBtn} onClick={this.clearBookmarks}> Clear All </Button>
+        }
         <PhotoGrid photos={this.props.bookmarkedPhotos} />
       </div>
     );

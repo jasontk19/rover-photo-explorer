@@ -78,26 +78,28 @@ class PhotoSearch extends React.Component {
     let aPhoto = this.props.photos[0];
     let earthDate = aPhoto && Utils.formatDate(aPhoto.earth_date);
     let cameraName = aPhoto && aPhoto.camera.full_name;
+    let manifestsLoaded = Object.keys(manifest).length > 0;
 
     return (
       <div className={classes.root}>
         {
-          Object.keys(manifest).length > 0 ? <RoverCard key={rover} name={rover} manifest={manifest}/> :
-          <LinearProgress size={100} className={classes.progress} />
+          !manifestsLoaded ? <LinearProgress size={100} className={classes.progress} /> :
+            <div>
+              <RoverCard key={rover} name={rover} manifest={manifest}/>
+              <PhotoForm
+                manifest={manifest}
+                selectedSol={this.state.selectedSol}
+                selectedSolObj={this.state.selectedSolObj}
+                handleSolChange={this.handleSolChange}
+                selectedCamera={this.state.selectedCamera}
+                handleCameraChange={this.handleCameraChange}
+                requestPhotos={this.requestPhotos} />
+            </div>
         }
-        <PhotoForm
-          manifest={manifest}
-          selectedSol={this.state.selectedSol}
-          selectedSolObj={this.state.selectedSolObj}
-          handleSolChange={this.handleSolChange}
-          selectedCamera={this.state.selectedCamera}
-          handleCameraChange={this.handleCameraChange}
-          requestPhotos={this.requestPhotos}
-        />
         { aPhoto &&
           <div className={classes.results}>
             <h3>{cameraName}, {earthDate} </h3>
-            {this.props.photos.length > 0 && <PhotoGrid photos={this.props.photos} />}
+            <PhotoGrid photos={this.props.photos} />
           </div>
         }
       </div>

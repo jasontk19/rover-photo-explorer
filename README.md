@@ -16,8 +16,9 @@ some hands-on experience working with it.
 
 
 ### TODO:
+* Smart paging of photo results (currently only showing first 25)
 * Improve styling and use consistent styling approach throughout app
-* Bookmark icon should change when photo is bookmarked/unbookmarked
 * Allow flipping sort direction on Sol dropdown
+* Typechecking with PropTypes throughout components
 
 
