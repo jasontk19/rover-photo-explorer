@@ -1,5 +1,5 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import Select from '@material-ui/core/Select';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -8,20 +8,30 @@ import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Button from '@material-ui/core/Button';
 import Search from '@material-ui/icons/Search';
+import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = () => ({
+const styles = theme => ({
   root: {
     margin: '30px 15px',
     padding: '15px',
     float: 'left',
-    backgroundColor: '#efefef',
-    border: '1px solid #ddd'
   },
   solDropdown: {
     minWidth: '215px'
   }
 });
+
+const propTypes = {
+  classes: PropTypes.object,
+  manifest: PropTypes.object,
+  selectedSol: PropTypes.number,
+  selectedSolObj: PropTypes.object,
+  handleSolChange: PropTypes.func,
+  selectedCamera: PropTypes.string,
+  handleCameraChange: PropTypes.func,
+  requestPhotos: PropTypes.func
+};
 
 const PhotoForm = props => {
   const {
@@ -40,7 +50,7 @@ const PhotoForm = props => {
   let cameras = selectedSolObj.cameras;
 
   return (
-    <div className={classes.root}>
+    <Paper className={classes.root}>
 
       <FormControl component="fieldset" margin="normal">
         <FormLabel component="legend"> Martian Sol </FormLabel>
@@ -92,8 +102,10 @@ const PhotoForm = props => {
           Search &nbsp; <Search />
         </Button>
       </FormControl>
-    </div>
+    </Paper>
   );
 };
+
+PhotoForm.propTypes = propTypes;
 
 export default withStyles(styles)(PhotoForm);

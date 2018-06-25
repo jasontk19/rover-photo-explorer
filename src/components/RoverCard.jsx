@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import { withStyles } from '@material-ui/core/styles';
 import {Utils} from  '../Utils';
+import PropTypes from 'prop-types';
 
 import Spirit from '../img/Spirit.jpg';
 import Opportunity from '../img/Opportunity.jpg';
@@ -63,6 +64,12 @@ const RoverCard = ({classes, name, manifest}) => {
       </CardContent>
     </Card>
   );
+};
+
+RoverCard.propTypes = {
+  classes: PropTypes.object,
+  name: PropTypes.string,
+  manifest: PropTypes.object
 };
 
 export default withStyles(styles)(RoverCard);

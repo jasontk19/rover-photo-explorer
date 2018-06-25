@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import { toggleBookmark } from "../state/actions.photos";
 import PropTypes from 'prop-types';
 
-
 const styles = {
   bookmark: {
     float: 'left'
@@ -72,7 +71,8 @@ PhotoDialog.propTypes = {
   bookmarkedPhotos: PropTypes.array,
   photo: PropTypes.object,
   open: PropTypes.bool,
-  onClose: PropTypes.func
+  onClose: PropTypes.func,
+  classes: PropTypes.object
 };
 
 const mapStateToProps = (state, ownProps) => ({

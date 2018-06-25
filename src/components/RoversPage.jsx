@@ -1,23 +1,19 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
-import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 
 import { roverNames } from '../constants';
 import { clearPhotos } from "../state/actions.photos";
 import PhotoSearch from './PhotoSearch';
 
-
 const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
-  },
-  progress: {
-    marginTop: '100px'
+  tabs: {
+    backgroundColor: theme.palette.primary.main,
+    height: '40px'
   }
 });
 
@@ -36,31 +32,35 @@ class RoversPage extends React.Component {
   };
 
   render() {
-    let { classes } = this.props;
+    let { classes, manifests } = this.props;
     let rover = roverNames[this.state.value];
-    let manifest = this.props.manifests[rover];
+    let manifest = manifests[rover];
 
     return (
       <div className={classes.root}>
-        <Paper>
-          <Tabs
-            value={this.state.value}
-            onChange={this.handleChange}
-            fullWidth
-            centered>
-              {roverNames.map(name => ( <Tab key={name} label={name} /> ))}
-          </Tabs>
-        </Paper>
+        <Tabs
+          value={this.state.value}
+          onChange={this.handleChange}
+          className={classes.tabs}
+          textColor="secondary"
+          fullWidth
+          centered>
+            {roverNames.map(name => ( <Tab key={name} label={name} /> ))}
+        </Tabs>
         <PhotoSearch key={rover} rover={rover} manifest={manifest} />
       </div>
     );
   }
 }
 
+RoversPage.PropTypes = {
+  classes: PropTypes.object,
+  manifests: PropTypes.arrayOf(PropTypes.object)
+};
+
 const mapStateToProps = (state, ownProps) => ({
   manifests: state.manifests
 });
 
 const connectedPage = connect(mapStateToProps)(RoversPage);
-
-export default withStyles(styles)(connectedPage);
+export default withStyles(styles, { withTheme: true })(connectedPage);

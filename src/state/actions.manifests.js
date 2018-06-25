@@ -19,7 +19,6 @@ function formatManifests (responses) {
 }
 
 export function loadAllManifests () {
-  /* TODO store in local storage after first request */
   return dispatch => {
     const requestUrl = baseUrl + 'manifests/';
     let config = {

@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 export const Header = () => {
 
   return (
-    <AppBar position="static" color="default">
+    <AppBar position="static" color="primary">
       <Toolbar>
         <Typography variant="title" color="inherit" style={ { marginRight: '100px' } }>
           Mars Rover Photo Explorer

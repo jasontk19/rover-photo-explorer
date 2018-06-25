@@ -5,17 +5,23 @@ import PhotoGrid from './PhotoGrid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { clearBookmarks } from '../state/actions.photos';
+import PropTypes from 'prop-types';
 
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper
+    margin: '10px'
   },
   title: {
     margin: '20px'
   },
+  btnRow: {
+    display: 'block',
+    minHeight: '60px'
+  },
   clearBtn: {
-    margin: '20px'
+    margin: '20px',
+    float: 'right',
   }
 });
 
@@ -30,21 +36,34 @@ class RoversPage extends React.Component {
   }
 
   render() {
-    let { classes } = this.props;
-    let hasPhotos = this.props.bookmarkedPhotos.length > 0;
+    let { classes, bookmarkedPhotos } = this.props;
+    let hasPhotos = bookmarkedPhotos.length > 0;
 
     return (
       <div className={classes.root}>
         <Typography variant="title" align="center" className={classes.title}> Bookmarked Photos </Typography>
         {
           !hasPhotos ? <Typography align="center"> No bookmarks yet! </Typography> :
-            <Button className={classes.clearBtn} onClick={this.clearBookmarks}> Clear All </Button>
+            <div className={classes.btnRow}>
+              <Button
+                color="secondary"
+                variant="raised"
+                className={classes.clearBtn}
+                onClick={this.clearBookmarks}> Clear All
+              </Button>
+            </div>
         }
-        <PhotoGrid photos={this.props.bookmarkedPhotos} />
+        <PhotoGrid photos={bookmarkedPhotos} />
       </div>
     );
   }
 }
+
+RoversPage.propTypes = {
+  bookmarkedPhotos: PropTypes.array,
+  classes: PropTypes.object
+};
+
 
 const mapStateToProps = (state, ownProps) => ({
   bookmarkedPhotos: state.bookmarkedPhotos

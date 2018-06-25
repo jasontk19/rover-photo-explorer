@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import {requestPhotos} from '../state/actions.photos';
 import RoverCard from './RoverCard';
 import PhotoForm from './PhotoForm';
@@ -10,7 +11,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 const styles = theme => ({
   root: {
-    margin: '20px'
+    margin: '20px',
   },
   form: {
     margin: '30px 15px',
@@ -69,13 +70,10 @@ class PhotoSearch extends React.Component {
   }
 
   render() {
-    const {
-      rover,
-      manifest,
-      classes
-    } = this.props;
+    const { rover, manifest, photos, classes } = this.props;
+    const { selectedSol, selectedSolObj, selectedCamera } = this.state;
 
-    let aPhoto = this.props.photos[0];
+    let aPhoto = photos[0];
     let earthDate = aPhoto && Utils.formatDate(aPhoto.earth_date);
     let cameraName = aPhoto && aPhoto.camera.full_name;
     let manifestsLoaded = Object.keys(manifest).length > 0;
@@ -88,10 +86,10 @@ class PhotoSearch extends React.Component {
               <RoverCard key={rover} name={rover} manifest={manifest}/>
               <PhotoForm
                 manifest={manifest}
-                selectedSol={this.state.selectedSol}
-                selectedSolObj={this.state.selectedSolObj}
+                selectedSol={selectedSol}
+                selectedSolObj={selectedSolObj}
                 handleSolChange={this.handleSolChange}
-                selectedCamera={this.state.selectedCamera}
+                selectedCamera={selectedCamera}
                 handleCameraChange={this.handleCameraChange}
                 requestPhotos={this.requestPhotos} />
             </div>
@@ -99,13 +97,20 @@ class PhotoSearch extends React.Component {
         { aPhoto &&
           <div className={classes.results}>
             <h3>{cameraName}, {earthDate} </h3>
-            <PhotoGrid photos={this.props.photos} />
+            <PhotoGrid photos={photos} />
           </div>
         }
       </div>
     );
   }
 }
+
+PhotoSearch.propTypes = {
+  rover: PropTypes.string,
+  manifest: PropTypes.object,
+  photos: PropTypes.arrayof(PropTypes.object),
+  classes: PropTypes.object
+};
 
 const mapStateToProps = (state, ownProps) => ({
     photos: state.photos

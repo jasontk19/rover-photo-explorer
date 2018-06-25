@@ -1,8 +1,20 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
 import PhotoDialog from './PhotoDialog';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+  root: {
+    height: '600px',
+    overflowY: 'auto',
+    overflowX: 'hidden'
+  },
+  tile: {
+    cursor: 'pointer'
+  }
+});
 
 class PhotoGrid extends React.Component {
   constructor(props) {
@@ -24,14 +36,10 @@ class PhotoGrid extends React.Component {
   };
 
   render () {
-    let tileStyles = { cursor: 'pointer' };
-    let containerStyles = {
-      height: '600px',
-      overflowY: 'auto',
-      overflowX: 'hidden'
-    };
+    const { classes, photos } = this.props;
+
     return (
-      <div style={containerStyles}>
+      <div className={classes.root}>
         { this.state.dialogOpen &&
           <PhotoDialog
             photo={this.state.dialogPhoto}
@@ -40,23 +48,24 @@ class PhotoGrid extends React.Component {
           />
         }
         <GridList cellHeight={120} spacing={4} cols={3}>
-
-          { (this.props.photos || []).map(photo => (
+          { (photos || []).map(photo => (
             <GridListTile
               key={photo.id}
-              style={tileStyles}
+              className={classes.tile}
               cols={1}
               onClick={this.handleClickOpen.bind(this, photo)}>
-
               <img src={photo.img_src} alt={photo.earth_date + photo.camera.name} />
-
             </GridListTile>
           )) }
-
         </GridList>
       </div>
     )
   }
 }
 
-export default PhotoGrid;
+PhotoGrid.propTypes = {
+  classes: PropTypes.object,
+  photos: PropTypes.arrayof(PropTypes.object)
+};
+
+export default withStyles(styles)(PhotoGrid);
