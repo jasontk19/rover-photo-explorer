@@ -47,7 +47,7 @@ class PhotoGrid extends React.Component {
             onClose={this.handleClose}
           />
         }
-        <GridList cellHeight={120} spacing={4} cols={3}>
+        <GridList cellHeight={120} spacing={8} cols={3}>
           { (photos || []).map(photo => (
             <GridListTile
               key={photo.id}

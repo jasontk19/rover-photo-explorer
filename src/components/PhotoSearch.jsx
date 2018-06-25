@@ -7,6 +7,7 @@ import PhotoForm from './PhotoForm';
 import PhotoGrid from './PhotoGrid';
 import {Utils} from '../Utils';
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 const styles = theme => ({
@@ -96,7 +97,7 @@ class PhotoSearch extends React.Component {
         }
         { aPhoto &&
           <div className={classes.results}>
-            <h3>{cameraName}, {earthDate} </h3>
+            <Typography variant="headline" color="textSecondary" gutterBottom>{cameraName}, {earthDate} </Typography>
             <PhotoGrid photos={photos} />
           </div>
         }

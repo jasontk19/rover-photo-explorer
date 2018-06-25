@@ -13,7 +13,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   root: {
-    margin: '30px 15px',
+    margin: '70px 15px 30px 15px',
     padding: '15px',
     float: 'left',
   },
