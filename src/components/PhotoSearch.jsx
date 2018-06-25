@@ -108,7 +108,7 @@ class PhotoSearch extends React.Component {
 PhotoSearch.propTypes = {
   rover: PropTypes.string,
   manifest: PropTypes.object,
-  photos: PropTypes.arrayof(PropTypes.object),
+  photos: PropTypes.arrayOf(PropTypes.object),
   classes: PropTypes.object
 };
 

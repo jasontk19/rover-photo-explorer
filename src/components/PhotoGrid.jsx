@@ -65,7 +65,7 @@ class PhotoGrid extends React.Component {
 
 PhotoGrid.propTypes = {
   classes: PropTypes.object,
-  photos: PropTypes.arrayof(PropTypes.object)
+  photos: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default withStyles(styles)(PhotoGrid);
