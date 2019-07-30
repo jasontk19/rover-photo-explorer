@@ -1,0 +1,4 @@
+helpr:
+  opened: 'ready for review'
+  merged: 'pr-merged'
+  rejected: 'pr-declined'
